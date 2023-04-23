@@ -7,9 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
     UsersModule,
-    MongooseModule.forRoot(
-      'mongodb+srv://hiromin:fsaf7o6bi2wjF1zP@cluster0.6cb6myi.mongodb.net/?retryWrites=true&w=majority',
-    ),
+    // データベースのパス
+    MongooseModule.forRoot('mongodb://localhost/nest-lesson'),
   ],
   controllers: [AppController],
   providers: [AppService],
