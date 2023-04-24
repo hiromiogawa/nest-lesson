@@ -1,27 +1,29 @@
-import { Schema, Document } from 'mongoose';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+import { Car } from '../../cars/schemas/car.schema';
 
-export interface User {
+@Schema()
+export class User extends Document {
+  @Prop()
   username: string;
+
+  @Prop()
   password: string;
+
+  @Prop()
   email: string;
+
+  @Prop([
+    {
+      name: { type: String, ref: Car.name },
+      modelName: { type: String, ref: Car.name },
+    },
+  ])
+  mycars: Array<{ name: string; modelName: string }>;
+
+  @Prop()
+  displacement: number;
 }
 
-export interface UserDocument extends User, Document {}
-
-export const UserSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-    // 同じ名前のユーザーを登録できない
-    index: { unique: true },
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    index: { unique: true },
-  },
-});
+export const UserSchema = SchemaFactory.createForClass(User);
+export type UserDocument = User & Document;
