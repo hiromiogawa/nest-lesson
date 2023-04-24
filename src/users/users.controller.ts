@@ -4,13 +4,12 @@ import {
   Delete,
   Get,
   Param,
-  Request,
   Post,
   Put,
   ValidationPipe,
   UseGuards,
 } from '@nestjs/common';
-import { User } from './interfaces/user.interface';
+import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
