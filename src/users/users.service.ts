@@ -10,7 +10,7 @@ export class UsersService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
   users: CreateUserDto[] = [];
   async create(user: CreateUserDto) {
-    // パスワードをハッシュ化
+    // パスワードをハッシュ化 第2引数はソルト
     const hashedPassword = await hash(user.password, 10);
 
     const createdUser = new this.userModel({
