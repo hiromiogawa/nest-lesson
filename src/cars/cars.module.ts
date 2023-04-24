@@ -9,6 +9,6 @@ import { CarsController } from './cars.controller';
   imports: [MongooseModule.forFeature([{ name: Car.name, schema: CarSchema }])],
   providers: [CarsService],
   controllers: [CarsController],
-  exports: [CarsService], // ここを CarsService に変更
+  exports: [CarsService, MongooseModule], // ここを CarsService に変更
 })
 export class CarsModule {}
