@@ -10,12 +10,23 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
+
+  async validateUser({ password, email }: CreateUserDto) {
+    // ユーザーを検索 (emailで検索)
+    const foundUser = await this.usersService.findByEmail(email);
+    // ユーザーが存在し、パスワードが一致する場合
+    if (foundUser && (await compare(password, foundUser.password))) {
+      return true;
+    } else {
+      false;
+    }
+  }
   async login(user: CreateUserDto) {
     // ユーザーを検索 (emailで検索)
     const foundUser = await this.usersService.findByEmail(user.email);
 
     // ユーザーが存在し、パスワードが一致する場合
-    if (foundUser && (await compare(user.password, foundUser.password))) {
+    if (this.validateUser(user)) {
       const payload = { username: foundUser.username };
       return {
         access_token: this.jwtService.sign(payload),
