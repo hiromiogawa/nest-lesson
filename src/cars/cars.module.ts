@@ -4,11 +4,17 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Car, CarSchema } from './schemas/car.schema';
 import { CarsService } from './cars.service';
 import { CarsController } from './cars.controller';
+import { MakersModule } from '../makers/makers.module';
+import { DriveTrainsModule } from '../drivetrains/drivetrains.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Car.name, schema: CarSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Car.name, schema: CarSchema }]),
+    MakersModule,
+    DriveTrainsModule,
+  ],
   providers: [CarsService],
   controllers: [CarsController],
-  exports: [CarsService, MongooseModule], // ここを CarsService に変更
+  exports: [CarsService, MongooseModule],
 })
 export class CarsModule {}

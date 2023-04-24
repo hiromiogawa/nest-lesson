@@ -1,18 +1,19 @@
-// users.module.ts
 import { Module } from '@nestjs/common';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
-import { CarsModule } from '../cars/cars.module'; // 追加
+import { CarsModule } from '../cars/cars.module';
+import { MakersModule } from '../makers/makers.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    CarsModule, // 追加
+    CarsModule,
+    MakersModule,
   ],
-  providers: [UsersService],
   controllers: [UsersController],
-  exports: [UsersService],
+  providers: [UsersService],
+  exports: [UsersService, MongooseModule],
 })
 export class UsersModule {}

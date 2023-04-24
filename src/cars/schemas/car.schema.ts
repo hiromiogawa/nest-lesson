@@ -1,20 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-
-enum CarMaker {
-  TOYOTA = 'TOYOTA',
-  HONDA = 'HONDA',
-  MAZDA = 'MAZDA',
-  // 他のメーカーも追加できます
-}
-
-enum Drivetrain {
-  FF = 'FF',
-  FR = 'FR',
-  WD4 = '4WD',
-  MR = 'MR',
-  // 他の駆動方式も追加できます
-}
+import { Maker } from '../../makers/schemas/maker.schema';
+import { DriveTrain } from '../../drivetrains/schemas/drivetrain.schema';
 
 @Schema()
 export class Car extends Document {
@@ -24,13 +11,13 @@ export class Car extends Document {
   @Prop({ required: true })
   modelName: string;
 
-  @Prop({ type: String, enum: CarMaker })
-  maker: CarMaker;
+  @Prop({ type: String, ref: Maker.name, required: true })
+  maker: string;
 
-  @Prop({ type: String, enum: Drivetrain })
-  drivetrain: Drivetrain;
+  @Prop({ type: String, ref: DriveTrain.name, required: true })
+  drivetrains: string;
 
-  @Prop()
+  @Prop({ required: true })
   displacement: number;
 }
 

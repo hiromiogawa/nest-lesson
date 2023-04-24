@@ -1,16 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
+import { CreateUserDto } from './dto/create-user.dto';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
-import { Car } from '../cars/schemas/car.schema';
+import { Car, CarDocument } from '../cars/schemas/car.schema';
+import { Maker, MakerDocument } from '../makers/schemas/maker.schema';
 import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel('User') private readonly userModel: Model<UserDocument>,
-    @InjectModel(Car.name) private carModel: Model<Car>,
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(Car.name) private carModel: Model<CarDocument>, // 追加
+    @InjectModel(Maker.name) private makerModel: Model<MakerDocument>, // 追加
   ) {}
   users: CreateUserDto[] = [];
   async create(user: CreateUserDto) {
