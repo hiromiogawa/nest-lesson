@@ -4,13 +4,16 @@ import {
   Delete,
   Get,
   Param,
+  Request,
   Post,
   Put,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { User } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -28,6 +31,7 @@ export class UsersController {
   }
 
   @Get(':username')
+  @UseGuards(AuthGuard('jwt'))
   async findOne(@Param('username') username: string) {
     return await this.usersService.findOne(username);
   }
