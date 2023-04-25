@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes } from 'mongoose';
+import { Document, SchemaTypes, Types } from 'mongoose';
 import { Car } from '../../cars/schemas/car.schema';
 
 @Schema()
@@ -13,8 +13,8 @@ export class User extends Document {
   @Prop()
   email: string;
 
-  @Prop([{ type: { type: SchemaTypes.ObjectId, ref: Car.name } }])
-  mycars: Car[];
+  @Prop([{ type: SchemaTypes.ObjectId, ref: Car.name, default: [] }])
+  mycars: Types.ObjectId[];
 
   @Prop()
   displacement: number;

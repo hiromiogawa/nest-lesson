@@ -37,7 +37,7 @@ export class UsersService {
       throw new NotFoundException('Car not found');
     }
 
-    user.mycars.push(car._id);
+    user.mycars.push(car._id.toString());
     await user.save();
 
     return user;
