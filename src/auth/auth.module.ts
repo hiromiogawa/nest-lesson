@@ -8,7 +8,7 @@ import { JwtStrategy } from './jwt.strategy';
 @Module({
   imports: [
     JwtModule.register({
-      // 本番は乱数
+      // 本番は乱数 envで管理すべき
       secret: 'secret',
       // jwdトークンの有効時間
       signOptions: { expiresIn: '1h' },

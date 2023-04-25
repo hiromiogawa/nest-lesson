@@ -4,15 +4,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { Car, CarDocument } from '../cars/schemas/car.schema';
-import { Maker, MakerDocument } from '../makers/schemas/maker.schema';
 import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-    @InjectModel(Car.name) private carModel: Model<CarDocument>, // 追加
-    @InjectModel(Maker.name) private makerModel: Model<MakerDocument>, // 追加
+    @InjectModel(Car.name) private carModel: Model<CarDocument>,
   ) {}
   users: CreateUserDto[] = [];
   async create(user: CreateUserDto) {
@@ -39,7 +37,7 @@ export class UsersService {
       throw new NotFoundException('Car not found');
     }
 
-    user.mycars.push({ name: car.name, modelName: car.modelName });
+    user.mycars.push(car._id);
     await user.save();
 
     return user;
@@ -49,8 +47,11 @@ export class UsersService {
     return await this.userModel.find().exec();
   }
 
-  async findOne(username: string) {
-    const user = await this.userModel.findOne({ username }).exec();
+  async findOne(_id: string) {
+    const user = await this.userModel
+      .findById(_id)
+      .populate({ path: 'mycars' })
+      .exec();
     if (!user) {
       throw new NotFoundException('Could not find user');
     }
@@ -72,27 +73,27 @@ export class UsersService {
   }
 
   // Update username
-  async updateUsername(email: string, newUsername: string): Promise<User> {
+  async updateUsername(_id: string, newUsername: string): Promise<User> {
     return await this.userModel
-      .findOneAndUpdate({ email }, { username: newUsername })
+      .findOneAndUpdate({ _id }, { username: newUsername })
       .exec();
   }
 
   // Update password
-  async updatePassword(email: string, newPassword: string): Promise<User> {
+  async updatePassword(_id: string, newPassword: string): Promise<User> {
     return await this.userModel
-      .findOneAndUpdate({ email }, { password: newPassword })
+      .findOneAndUpdate({ _id }, { password: newPassword })
       .exec();
   }
 
   // Update email
-  async updateEmail(oldEmail: string, newEmail: string): Promise<User> {
+  async updateEmail(_id: string, newEmail: string): Promise<User> {
     return await this.userModel
-      .findOneAndUpdate({ email: oldEmail }, { email: newEmail })
+      .findOneAndUpdate({ _id }, { email: newEmail })
       .exec();
   }
 
-  async delete(username: string): Promise<User> {
-    return await this.userModel.findOneAndDelete({ username }).exec();
+  async delete(_id: string): Promise<User> {
+    return await this.userModel.findOneAndDelete({ _id }).exec();
   }
 }

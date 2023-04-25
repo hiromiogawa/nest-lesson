@@ -5,12 +5,15 @@ import { Model } from 'mongoose';
 import { Car, CarDocument } from './schemas/car.schema';
 import { CreateCarDto } from './dto/create-car.dto';
 import { Maker } from '../makers/schemas/maker.schema';
+import { DriveTrain } from '../drivetrains/schemas/drivetrain.schema';
 
 @Injectable()
 export class CarsService {
   constructor(
     @InjectModel(Car.name) private carModel: Model<CarDocument>,
     @InjectModel(Maker.name) private readonly makerModel: Model<Maker>,
+    @InjectModel(DriveTrain.name)
+    private readonly driveTrainModel: Model<DriveTrain>,
   ) {}
 
   async create(createCarDto: CreateCarDto): Promise<Car> {
@@ -50,11 +53,21 @@ export class CarsService {
     return deletedCar;
   }
 
+  // メーカーから絞り込み
   async findByMaker(makerId: string): Promise<Car[]> {
     const maker = await this.makerModel.findById(makerId).exec();
     if (!maker) {
       throw new NotFoundException('Maker not found');
     }
     return this.carModel.find({ maker: makerId }).exec();
+  }
+
+  // 駆動方式から絞り込み
+  async findByDraiveTrain(driveTrainId: string): Promise<Car[]> {
+    const driveTrain = await this.driveTrainModel.findById(driveTrainId).exec();
+    if (!driveTrain) {
+      throw new NotFoundException('Maker not found');
+    }
+    return this.carModel.find({ driveTrain: driveTrainId }).exec();
   }
 }

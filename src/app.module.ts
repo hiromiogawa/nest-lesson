@@ -5,8 +5,6 @@ import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { CarsModule } from './cars/cars.module';
-import { MakersModule } from './makers/makers.module';
-import { DriveTrainsModule } from './drivetrains/drivetrains.module';
 
 @Module({
   imports: [
@@ -15,8 +13,6 @@ import { DriveTrainsModule } from './drivetrains/drivetrains.module';
     MongooseModule.forRoot('mongodb://localhost/nest-lesson'),
     AuthModule,
     CarsModule,
-    MakersModule,
-    DriveTrainsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

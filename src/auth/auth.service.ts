@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { compare } from 'bcrypt';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +11,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser({ password, email }: CreateUserDto) {
+  async validateUser({ password, email }: LoginUserDto) {
     // ユーザーを検索 (emailで検索)
     const foundUser = await this.usersService.findByEmail(email);
     // ユーザーが存在し、パスワードが一致する場合
@@ -21,13 +21,13 @@ export class AuthService {
       false;
     }
   }
-  async login(user: CreateUserDto) {
+  async login(loginUser: LoginUserDto) {
     // ユーザーを検索 (emailで検索)
-    const foundUser = await this.usersService.findByEmail(user.email);
+    const foundUser = await this.usersService.findByEmail(loginUser.email);
 
     // ユーザーが存在し、パスワードが一致する場合
-    if (this.validateUser(user)) {
-      const payload = { username: foundUser.username };
+    if (this.validateUser(loginUser)) {
+      const payload = { id: foundUser._id };
       return {
         access_token: this.jwtService.sign(payload),
       };

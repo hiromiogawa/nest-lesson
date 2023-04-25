@@ -24,46 +24,60 @@ export class UsersController {
     return await this.usersService.create(createUser);
   }
 
+  @Post(':userId/add-car/:carId')
+  @UseGuards(AuthGuard('jwt'))
+  async addCarToUser(
+    @Param('userId') userId: string,
+    @Param('carId') carId: string,
+  ): Promise<User> {
+    return this.usersService.addCarToUser(userId, carId);
+  }
+
+  // このまま使うのはまずいパスワード丸見え
   @Get()
   async findAll() {
     return await this.usersService.findAll();
   }
 
-  @Get(':username')
+  @Get(':id')
   @UseGuards(AuthGuard('jwt'))
-  async findOne(@Param('username') username: string) {
-    return await this.usersService.findOne(username);
+  async findOne(@Param('id') _id: string) {
+    return await this.usersService.findOne(_id);
   }
 
   // Update username
-  @Put('/update-name/:email')
+  @Put('/update-name/:id')
+  @UseGuards(AuthGuard('jwt'))
   async updateUsername(
-    @Param('email') email: string,
+    @Param('id') _id: string,
     @Body('username') newUsername: string,
   ): Promise<User> {
-    return await this.usersService.updateUsername(email, newUsername);
+    return await this.usersService.updateUsername(_id, newUsername);
   }
 
   // Update password
-  @Put('/update-password/:email')
+  @Put('/update-password/:id')
+  @UseGuards(AuthGuard('jwt'))
   async updatePassword(
-    @Param('email') email: string,
+    @Param('id') _id: string,
     @Body('password') newPassword: string,
   ): Promise<User> {
-    return await this.usersService.updatePassword(email, newPassword);
+    return await this.usersService.updatePassword(_id, newPassword);
   }
 
   // Update email
-  @Put('/update-email/:email')
+  @Put('/update-email/:id')
+  @UseGuards(AuthGuard('jwt'))
   async updateEmail(
-    @Param('email') oldEmail: string,
+    @Param('id') _id: string,
     @Body('email') newEmail: string,
   ): Promise<User> {
-    return await this.usersService.updateEmail(oldEmail, newEmail);
+    return await this.usersService.updateEmail(_id, newEmail);
   }
 
-  @Delete(':username')
-  async delete(@Param('username') username: string) {
-    return await this.usersService.delete(username);
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  async delete(@Param('id') _id: string) {
+    return await this.usersService.delete(_id);
   }
 }

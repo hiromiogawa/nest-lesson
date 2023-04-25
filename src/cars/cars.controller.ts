@@ -35,6 +35,13 @@ export class CarsController {
     return this.carsService.findByMaker(makerId);
   }
 
+  @Get('/driveTrain/:driveTrainId')
+  async findByDraiveTrain(
+    @Param('driveTrainId') driveTrainId: string,
+  ): Promise<Car[]> {
+    return this.carsService.findByDraiveTrain(driveTrainId);
+  }
+
   @Put(':id')
   async update(
     @Param('id') carId: string,
