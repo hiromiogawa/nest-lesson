@@ -26,10 +26,17 @@ export class UsersController {
     return await this.usersService.create(createUser);
   }
 
-  // このまま使うのはまずいパスワード丸見え
+  // // このまま使うのはまずいパスワード丸見え
+  // @Get()
+  // async findAll() {
+  //   return await this.usersService.findAll();
+  // }
+
   @Get()
-  async findAll() {
-    return await this.usersService.findAll();
+  @UseGuards(AuthGuard('jwt'))
+  async findMy(@Req() req) {
+    const _id = req.user.id;
+    return await this.usersService.findOne(_id);
   }
 
   @Get(':id')
@@ -39,29 +46,30 @@ export class UsersController {
   }
 
   // Update username
-  @Put('/update-name')
+  @Put('update-name')
   @UseGuards(AuthGuard('jwt'))
-  @HttpCode(204) // 追加
+  @HttpCode(204)
   async updateUsername(@Req() req, @Body('username') newUsername: string) {
     const userId = req.user.id;
     await this.usersService.updateUsername(userId, newUsername);
   }
 
   // Update password
-  @Put('/update-password')
+  @Put('update-password')
   @UseGuards(AuthGuard('jwt'))
-  @HttpCode(204) // 追加
+  @HttpCode(204)
   async updatePassword(@Req() req, @Body('password') newPassword: string) {
     const userId = req.user.id;
+    console.log(userId);
     await this.usersService.updatePassword(userId, newPassword);
   }
 
   // Update email
-  @Put('/update-email')
+  @Put('update-email')
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(204) // 追加
   async updateEmail(@Req() req, @Body('email') newEmail: string) {
-    const userId = req.user.id;
+    const userId = req.user.eid;
     await this.usersService.updateEmail(userId, newEmail);
   }
 

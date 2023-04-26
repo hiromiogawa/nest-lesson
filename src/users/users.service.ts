@@ -56,12 +56,6 @@ export class UsersService {
     return this.myCarService.findByUserId(userId);
   }
 
-  async update(username: string, password: string): Promise<User> {
-    return await this.userModel
-      .findOneAndUpdate({ username }, { password })
-      .exec();
-  }
-
   // Update username
   async updateUsername(_id: string, newUsername: string): Promise<User> {
     return await this.userModel
@@ -73,6 +67,7 @@ export class UsersService {
   async updatePassword(_id: string, newPassword: string): Promise<User> {
     return await this.userModel
       .findOneAndUpdate({ _id }, { password: newPassword })
+      .select('+password')
       .exec();
   }
 
@@ -80,6 +75,7 @@ export class UsersService {
   async updateEmail(_id: string, newEmail: string): Promise<User> {
     return await this.userModel
       .findOneAndUpdate({ _id }, { email: newEmail })
+      .select('+email')
       .exec();
   }
 

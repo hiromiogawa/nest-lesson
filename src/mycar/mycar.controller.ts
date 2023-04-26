@@ -31,7 +31,7 @@ export class MyCarController {
     return this.myCarService.create(createMyCarDto);
   }
 
-  @Get('my')
+  @Get()
   @UseGuards(AuthGuard('jwt'))
   async findMyCars(@Req() req): Promise<MyCar[]> {
     const userId = req.user.id;

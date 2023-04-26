@@ -3,12 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Setting, SettingDocument } from './schemas/setting.schema';
 import { CreateSettingDto } from './dto/create-setting.dto';
+import { MyCar, MyCarDocument } from '../mycar/schemas/mycar.schema';
 
 @Injectable()
 export class SettingsService {
   constructor(
     @InjectModel(Setting.name)
     private readonly settingModel: Model<SettingDocument>,
+    @InjectModel(MyCar.name)
+    private readonly mycarModel: Model<MyCarDocument>,
   ) {}
 
   async create(createSettingDto: CreateSettingDto): Promise<Setting> {
@@ -16,8 +19,8 @@ export class SettingsService {
     return createdSetting.save();
   }
 
-  async findAll(): Promise<Setting[]> {
-    return this.settingModel.find().exec();
+  async findAllByMyCarId(mycarId: string): Promise<Setting[]> {
+    return await this.settingModel.find({ mycarId }).exec();
   }
 
   async findOne(id: string): Promise<Setting> {
@@ -42,5 +45,16 @@ export class SettingsService {
     if (!deletedSetting) {
       throw new NotFoundException('Setting not found');
     }
+  }
+
+  async isUserRelatedToSetting(
+    userId: string,
+    settingId: string,
+  ): Promise<boolean> {
+    const setting = await this.settingModel.findById(settingId).exec();
+    const mycar = await this.mycarModel
+      .findOne({ userId, _id: setting.mycarId })
+      .exec();
+    return !!mycar;
   }
 }
