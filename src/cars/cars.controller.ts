@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { Car } from './schemas/car.schema';
@@ -30,9 +31,11 @@ export class CarsController {
     return this.carsService.findOne(carId);
   }
 
-  @Get('/maker/:makerId')
-  async findByMaker(@Param('makerId') makerId: string): Promise<Car[]> {
-    return this.carsService.findByMaker(makerId);
+  @Get('/manufacture/:manufactureId')
+  async findByManufacture(
+    @Param('manufactureId') manufactureId: string,
+  ): Promise<Car[]> {
+    return this.carsService.findByManufacture(manufactureId);
   }
 
   @Get('/driveTrain/:driveTrainId')
@@ -43,15 +46,14 @@ export class CarsController {
   }
 
   @Put(':id')
-  async update(
-    @Param('id') carId: string,
-    @Body() updateCarDto: CreateCarDto,
-  ): Promise<Car> {
-    return this.carsService.update(carId, updateCarDto);
+  @HttpCode(204)
+  async update(@Param('id') carId: string, @Body() updateCarDto: CreateCarDto) {
+    await this.carsService.update(carId, updateCarDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') carId: string): Promise<Car> {
-    return this.carsService.delete(carId);
+  @HttpCode(204)
+  async delete(@Param('id') carId: string) {
+    await this.carsService.delete(carId);
   }
 }

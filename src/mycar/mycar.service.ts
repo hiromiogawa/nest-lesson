@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateMyCarDto } from './dto/create-mycar.dto';
@@ -25,5 +25,27 @@ export class MyCarService {
 
   async findOne(id: string): Promise<MyCar> {
     return this.myCarModel.findById(id).exec();
+  }
+
+  async update(
+    id: string,
+    userId: string,
+    updateMyCarDto: CreateMyCarDto,
+  ): Promise<void> {
+    const updatedMyCar = await this.myCarModel
+      .findOneAndUpdate({ _id: id, userId }, updateMyCarDto)
+      .exec();
+    if (!updatedMyCar) {
+      throw new NotFoundException('Could not find mycar');
+    }
+  }
+
+  async delete(id: string, userId: string): Promise<void> {
+    const deletedMyCar = await this.myCarModel
+      .findOneAndDelete({ _id: id, userId })
+      .exec();
+    if (!deletedMyCar) {
+      throw new NotFoundException('Could not find mycar');
+    }
   }
 }

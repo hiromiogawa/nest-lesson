@@ -7,6 +7,8 @@ import {
   Param,
   Post,
   Put,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
 import { CreateTuningDto } from './dto/create-tuning.dto';
 import { TuningService } from './tuning.service';
@@ -32,15 +34,17 @@ export class TuningController {
   }
 
   @Put(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async update(
     @Param('id') id: string,
     @Body() updateTuningDto: CreateTuningDto,
-  ): Promise<Tuning> {
-    return this.tuningService.update(id, updateTuningDto);
+  ): Promise<void> {
+    await this.tuningService.update(id, updateTuningDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<Tuning> {
-    return this.tuningService.delete(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(@Param('id') id: string): Promise<void> {
+    await this.tuningService.delete(id);
   }
 }

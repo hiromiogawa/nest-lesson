@@ -24,13 +24,11 @@ export class TuningService {
     return this.tuningModel.findById(id).exec();
   }
 
-  async update(id: string, updateTuningDto: CreateTuningDto): Promise<Tuning> {
-    return this.tuningModel
-      .findByIdAndUpdate(id, updateTuningDto, { new: true })
-      .exec();
+  async update(id: string, updateTuningDto: CreateTuningDto): Promise<void> {
+    await this.tuningModel.findByIdAndUpdate(id, updateTuningDto).exec();
   }
 
-  async delete(id: string): Promise<Tuning> {
-    return this.tuningModel.findByIdAndDelete(id).exec();
+  async delete(id: string): Promise<void> {
+    await this.tuningModel.findByIdAndDelete(id).exec();
   }
 }

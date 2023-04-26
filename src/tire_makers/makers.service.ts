@@ -1,5 +1,5 @@
 // makers/makers.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Maker, MakerDocument } from './schemas/maker.schema';
@@ -24,13 +24,19 @@ export class MakersService {
     return this.makerModel.findById(id).exec();
   }
 
-  async update(id: string, createMakerDto: CreateMakerDto): Promise<Maker> {
-    return this.makerModel
+  async update(id: string, createMakerDto: CreateMakerDto): Promise<void> {
+    const updatedMaker = await this.makerModel
       .findByIdAndUpdate(id, createMakerDto, { new: true })
       .exec();
+    if (!updatedMaker) {
+      throw new NotFoundException('Could not find maker');
+    }
   }
 
-  async delete(id: string): Promise<Maker> {
-    return this.makerModel.findByIdAndDelete(id).exec();
+  async delete(id: string): Promise<void> {
+    const deletedMaker = await this.makerModel.findByIdAndDelete(id).exec();
+    if (!deletedMaker) {
+      throw new NotFoundException('Could not find maker');
+    }
   }
 }

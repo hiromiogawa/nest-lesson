@@ -6,6 +6,9 @@ import {
   Param,
   UseGuards,
   Req,
+  Put,
+  Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { MyCarService } from './mycar.service';
 import { CreateMyCarDto } from './dto/create-mycar.dto';
@@ -42,5 +45,25 @@ export class MyCarController {
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<MyCar> {
     return this.myCarService.findOne(id);
+  }
+
+  @Put(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(204)
+  async update(
+    @Req() req,
+    @Param('id') id: string,
+    @Body() updateMyCarDto: CreateMyCarDto,
+  ) {
+    const userId = req.user.id;
+    await this.myCarService.update(id, userId, updateMyCarDto);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(204)
+  async delete(@Req() req, @Param('id') id: string) {
+    const userId = req.user.id;
+    await this.myCarService.delete(id, userId);
   }
 }

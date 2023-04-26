@@ -1,21 +1,15 @@
 // tuning.schema.ts
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes } from 'mongoose';
+import { Document, SchemaTypes, Types } from 'mongoose';
 import { MyCar } from '../../mycar/schemas/mycar.schema';
 
 @Schema()
 export class Tuning extends Document {
   @Prop({ type: SchemaTypes.ObjectId, ref: MyCar.name })
-  mycarId: MyCar;
+  mycarId: Types.ObjectId;
 
   @Prop()
-  modification: string;
-
-  @Prop()
-  partName: string;
-
-  @Prop()
-  effect: string;
+  freeText: string;
 }
 
 export const TuningSchema = SchemaFactory.createForClass(Tuning);

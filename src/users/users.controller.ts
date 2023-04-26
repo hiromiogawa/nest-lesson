@@ -9,12 +9,11 @@ import {
   Req,
   ValidationPipe,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
-import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
-import { Types } from 'mongoose';
 
 @Controller('users')
 export class UsersController {
@@ -41,40 +40,35 @@ export class UsersController {
   // Update username
   @Put('/update-name')
   @UseGuards(AuthGuard('jwt'))
-  async updateUsername(
-    @Req() req,
-    @Body('username') newUsername: string,
-  ): Promise<User> {
+  @HttpCode(204) // 追加
+  async updateUsername(@Req() req, @Body('username') newUsername: string) {
     const userId = req.user.id;
-    return await this.usersService.updateUsername(userId, newUsername);
+    await this.usersService.updateUsername(userId, newUsername);
   }
 
   // Update password
   @Put('/update-password')
   @UseGuards(AuthGuard('jwt'))
-  async updatePassword(
-    @Req() req,
-    @Body('password') newPassword: string,
-  ): Promise<User> {
+  @HttpCode(204) // 追加
+  async updatePassword(@Req() req, @Body('password') newPassword: string) {
     const userId = req.user.id;
-    return await this.usersService.updatePassword(userId, newPassword);
+    await this.usersService.updatePassword(userId, newPassword);
   }
 
   // Update email
   @Put('/update-email')
   @UseGuards(AuthGuard('jwt'))
-  async updateEmail(
-    @Req() req,
-    @Body('email') newEmail: string,
-  ): Promise<User> {
+  @HttpCode(204) // 追加
+  async updateEmail(@Req() req, @Body('email') newEmail: string) {
     const userId = req.user.id;
-    return await this.usersService.updateEmail(userId, newEmail);
+    await this.usersService.updateEmail(userId, newEmail);
   }
 
   @Delete()
   @UseGuards(AuthGuard('jwt'))
+  @HttpCode(204) // 追加
   async delete(@Req() req) {
     const userId = req.user.id;
-    return await this.usersService.delete(userId);
+    await this.usersService.delete(userId);
   }
 }

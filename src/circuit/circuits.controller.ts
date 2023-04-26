@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  HttpCode,
 } from '@nestjs/common';
 import { CreateCircuitDto, UpdateCircuitDto } from './dto/create-circuit.dto';
 import { CircuitsService } from './circuits.service';
@@ -31,15 +32,17 @@ export class CircuitsController {
   }
 
   @Put(':id')
+  @HttpCode(204)
   async update(
     @Param('id') id: string,
     @Body() updateCircuitDto: UpdateCircuitDto,
-  ): Promise<Circuit> {
-    return this.circuitsService.update(id, updateCircuitDto);
+  ) {
+    await this.circuitsService.update(id, updateCircuitDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<Circuit> {
-    return this.circuitsService.delete(id);
+  @HttpCode(204)
+  async delete(@Param('id') id: string) {
+    await this.circuitsService.delete(id);
   }
 }

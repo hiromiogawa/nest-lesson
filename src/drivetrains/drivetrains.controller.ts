@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { DriveTrainsService } from './drivetrains.service';
 import { CreateDriveTrainDto } from './dto/create-drivetrain.dto';
@@ -33,15 +34,17 @@ export class DriveTrainsController {
   }
 
   @Put(':id')
+  @HttpCode(204)
   async update(
     @Param('id') id: string,
     @Body() createDriveTrainDto: CreateDriveTrainDto,
-  ): Promise<DriveTrain> {
-    return this.DriveTrainsService.update(id, createDriveTrainDto);
+  ) {
+    await this.DriveTrainsService.update(id, createDriveTrainDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<DriveTrain> {
-    return this.DriveTrainsService.delete(id);
+  @HttpCode(204)
+  async delete(@Param('id') id: string) {
+    await this.DriveTrainsService.delete(id);
   }
 }

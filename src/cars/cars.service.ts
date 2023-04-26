@@ -4,14 +4,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Car, CarDocument } from './schemas/car.schema';
 import { CreateCarDto } from './dto/create-car.dto';
-import { Maker } from '../makers/schemas/maker.schema';
+import { Manufacture } from '../manufactures/schemas/manufacture.schema';
 import { DriveTrain } from '../drivetrains/schemas/drivetrain.schema';
 
 @Injectable()
 export class CarsService {
   constructor(
     @InjectModel(Car.name) private carModel: Model<CarDocument>,
-    @InjectModel(Maker.name) private readonly makerModel: Model<Maker>,
+    @InjectModel(Manufacture.name)
+    private readonly ManufactureModel: Model<Manufacture>,
     @InjectModel(DriveTrain.name)
     private readonly driveTrainModel: Model<DriveTrain>,
   ) {}
@@ -33,7 +34,7 @@ export class CarsService {
     return car;
   }
 
-  async update(carId: string, updateCarDto: CreateCarDto): Promise<Car> {
+  async update(carId: string, updateCarDto: CreateCarDto): Promise<void> {
     const updatedCar = await this.carModel.findByIdAndUpdate(
       carId,
       updateCarDto,
@@ -42,31 +43,31 @@ export class CarsService {
     if (!updatedCar) {
       throw new NotFoundException('Car not found');
     }
-    return updatedCar;
   }
 
-  async delete(carId: string): Promise<Car> {
+  async delete(carId: string): Promise<void> {
     const deletedCar = await this.carModel.findByIdAndDelete(carId).exec();
     if (!deletedCar) {
       throw new NotFoundException('Car not found');
     }
-    return deletedCar;
   }
 
   // メーカーから絞り込み
-  async findByMaker(makerId: string): Promise<Car[]> {
-    const maker = await this.makerModel.findById(makerId).exec();
-    if (!maker) {
-      throw new NotFoundException('Maker not found');
+  async findByManufacture(manufactureId: string): Promise<Car[]> {
+    const Manufacture = await this.ManufactureModel.findById(
+      manufactureId,
+    ).exec();
+    if (!Manufacture) {
+      throw new NotFoundException('Manufacture not found');
     }
-    return this.carModel.find({ maker: makerId }).exec();
+    return this.carModel.find({ manufacture: manufactureId }).exec();
   }
 
-  // 駆動方式から絞り込み
+  // 駆動方式から絞り込み※使わないかも
   async findByDraiveTrain(driveTrainId: string): Promise<Car[]> {
     const driveTrain = await this.driveTrainModel.findById(driveTrainId).exec();
     if (!driveTrain) {
-      throw new NotFoundException('Maker not found');
+      throw new NotFoundException('Manufacture not found');
     }
     return this.carModel.find({ driveTrain: driveTrainId }).exec();
   }

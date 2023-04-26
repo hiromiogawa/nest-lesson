@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateCircuitDto, UpdateCircuitDto } from './dto/create-circuit.dto';
@@ -24,16 +24,19 @@ export class CircuitsService {
     return this.circuitModel.findById(id).exec();
   }
 
-  async update(
-    id: string,
-    updateCircuitDto: UpdateCircuitDto,
-  ): Promise<Circuit> {
-    return this.circuitModel
+  async update(id: string, updateCircuitDto: UpdateCircuitDto): Promise<void> {
+    const updatedCircuit = await this.circuitModel
       .findByIdAndUpdate(id, updateCircuitDto, { new: true })
       .exec();
+    if (!updatedCircuit) {
+      throw new NotFoundException('Could not find circuit');
+    }
   }
 
-  async delete(id: string): Promise<Circuit> {
-    return this.circuitModel.findByIdAndDelete(id).exec();
+  async delete(id: string): Promise<void> {
+    const deletedCircuit = await this.circuitModel.findByIdAndDelete(id).exec();
+    if (!deletedCircuit) {
+      throw new NotFoundException('Could not find circuit');
+    }
   }
 }

@@ -7,6 +7,7 @@ import {
   Param,
   Put,
   Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { MakersService } from './makers.service';
 import { CreateMakerDto } from './dto/create-maker.dto';
@@ -32,15 +33,17 @@ export class MakersController {
   }
 
   @Put(':id')
+  @HttpCode(204)
   async update(
     @Param('id') id: string,
     @Body() createMakerDto: CreateMakerDto,
-  ): Promise<Maker> {
-    return this.makersService.update(id, createMakerDto);
+  ) {
+    await this.makersService.update(id, createMakerDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<Maker> {
-    return this.makersService.delete(id);
+  @HttpCode(204)
+  async delete(@Param('id') id: string) {
+    await this.makersService.delete(id);
   }
 }

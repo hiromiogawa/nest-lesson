@@ -9,6 +9,10 @@ erDiagram
   RECORD ||--o{ LAPTIME : has
   LAPTIME ||--o{ TUNING : has
   MYCAR ||--o{ TUNING : has
+  TUNING ||--o{ SETTING : has
+  LAPTIME ||--o{ SETTING : has
+  TIRE_MANUFACTURER ||--o{ TIRE : produces
+  TIRE ||--o{ SETTING : has
   USER {
     objectId _id
     string username
@@ -52,6 +56,7 @@ erDiagram
     objectId recordId
     string time
     objectId tuningId
+    objectId settingId
   }
   TUNING {
     objectId _id
@@ -59,6 +64,24 @@ erDiagram
     string modification
     string partName
     string effect
+  }
+  SETTING {
+    objectId _id
+    objectId tuningId
+    objectId tireId
+    string settingName
+    string settingValue
+  }
+  TIRE_MANUFACTURER {
+    objectId _id
+    string name
+    string country
+  }
+  TIRE {
+    objectId _id
+    objectId tireManufacturerId
+    string modelName
+    string type
   }
 
 ```
