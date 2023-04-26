@@ -50,7 +50,10 @@ export class MyCarService {
   }
 
   // myCarIDに対しjwtから取得したuserIdに対しリレーションされているデータかどうか判別
-  async isUserRelatedToCar(userId: string, mycarId: string): Promise<boolean> {
+  async isUserRelatedToMyCar(
+    userId: string,
+    mycarId: string,
+  ): Promise<boolean> {
     const mycar = await this.myCarModel.findOne({ _id: mycarId }).exec();
 
     if (mycar.userId && mycar.userId.toString() === userId) {

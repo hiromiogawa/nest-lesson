@@ -34,7 +34,7 @@ export class SettingsController {
   ): Promise<Setting> {
     const userId = req.user.id;
     const mycarId = createSettingDto.mycarId;
-    if (await this.myCarsService.isUserRelatedToCar(userId, mycarId)) {
+    if (await this.myCarsService.isUserRelatedToMyCar(userId, mycarId)) {
       return this.settingsService.create(createSettingDto);
     } else {
       throw new UnauthorizedException("You don't have access to this car.");

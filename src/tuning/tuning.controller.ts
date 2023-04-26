@@ -34,7 +34,7 @@ export class TuningController {
   ): Promise<Tuning> {
     const userId = req.user.id;
     const mycarId = createTuningDto.mycarId;
-    if (await this.myCarsService.isUserRelatedToCar(userId, mycarId)) {
+    if (await this.myCarsService.isUserRelatedToMyCar(userId, mycarId)) {
       return this.tuningService.create(createTuningDto);
     } else {
       throw new UnauthorizedException("You don't have access to this car.");
@@ -77,8 +77,8 @@ export class TuningController {
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Req() req, @Param('id') id: string): Promise<void> {
-    const user = req.user;
-    if (await this.tuningService.isUserRelatedToTuning(user._id, id)) {
+    const userId = req.user.id;
+    if (await this.tuningService.isUserRelatedToTuning(userId, id)) {
       throw new UnauthorizedException();
     } else {
     }
