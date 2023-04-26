@@ -17,6 +17,7 @@ export class CarsController {
   constructor(private readonly carsService: CarsService) {}
 
   @Post()
+  @HttpCode(201)
   async create(@Body() createCarDto: CreateCarDto): Promise<Car> {
     return this.carsService.create(createCarDto);
   }

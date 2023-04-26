@@ -1,4 +1,3 @@
-// TireManufacturers/TireManufacturers.controller.ts
 import {
   Controller,
   Get,
@@ -13,13 +12,14 @@ import { TireManufacturersService } from './tire_manufacturers.service';
 import { CreateTireManufacturerDto } from './dto/create-tire_manufacturer.dto';
 import { TireManufacturer } from './schemas/tire_manufacturer.schema';
 
-@Controller('TireManufacturers')
+@Controller('tire_manufacturers')
 export class TireManufacturersController {
   constructor(
     private readonly TireManufacturersService: TireManufacturersService,
   ) {}
 
   @Post()
+  @HttpCode(201)
   async create(
     @Body() createTireManufacturerDto: CreateTireManufacturerDto,
   ): Promise<TireManufacturer> {

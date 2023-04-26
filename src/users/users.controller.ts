@@ -21,6 +21,7 @@ export class UsersController {
 
   // 新規登録
   @Post()
+  @HttpCode(201)
   async create(@Body(ValidationPipe) createUser: CreateUserDto) {
     return await this.usersService.create(createUser);
   }

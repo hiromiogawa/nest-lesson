@@ -19,6 +19,7 @@ export class TuningController {
   constructor(private readonly tuningService: TuningService) {}
 
   @Post()
+  @HttpCode(201)
   async create(@Body() createTuningDto: CreateTuningDto): Promise<Tuning> {
     return this.tuningService.create(createTuningDto);
   }

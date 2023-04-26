@@ -1,6 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes, Types } from 'mongoose';
-import { Car } from '../../cars/schemas/car.schema';
+import { Document } from 'mongoose';
 
 @Schema()
 export class User extends Document {

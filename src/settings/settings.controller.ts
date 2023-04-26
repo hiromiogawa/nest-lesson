@@ -18,6 +18,7 @@ export class SettingsController {
   constructor(private readonly settingsService: SettingsService) {}
 
   @Post()
+  @HttpCode(201)
   async create(@Body() createSettingDto: CreateSettingDto): Promise<Setting> {
     return this.settingsService.create(createSettingDto);
   }

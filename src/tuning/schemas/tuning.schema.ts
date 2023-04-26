@@ -5,7 +5,7 @@ import { MyCar } from '../../mycar/schemas/mycar.schema';
 
 @Schema()
 export class Tuning extends Document {
-  @Prop({ type: SchemaTypes.ObjectId, ref: MyCar.name })
+  @Prop({ require: true, type: SchemaTypes.ObjectId, ref: MyCar.name })
   mycarId: Types.ObjectId;
 
   @Prop()

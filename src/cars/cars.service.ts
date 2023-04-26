@@ -27,7 +27,11 @@ export class CarsService {
   }
 
   async findOne(carId: string): Promise<Car> {
-    const car = await this.carModel.findById(carId).exec();
+    const car = await this.carModel
+      .findById(carId)
+      .populate({ path: 'manufacturer' })
+      .populate({ path: 'drivetrains' })
+      .exec();
     if (!car) {
       throw new NotFoundException('Car not found');
     }

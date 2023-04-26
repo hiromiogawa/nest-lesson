@@ -17,6 +17,7 @@ export class DriveTrainsController {
   constructor(private readonly DriveTrainsService: DriveTrainsService) {}
 
   @Post()
+  @HttpCode(201)
   async create(
     @Body() createDriveTrainDto: CreateDriveTrainDto,
   ): Promise<DriveTrain> {

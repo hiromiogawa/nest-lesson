@@ -18,6 +18,7 @@ export class TiresController {
   constructor(private readonly tiresService: TiresService) {}
 
   @Post()
+  @HttpCode(201)
   async create(@Body() createTireDto: CreateTireDto): Promise<Tire> {
     return this.tiresService.create(createTireDto);
   }

@@ -20,6 +20,7 @@ export class MyCarController {
   constructor(private readonly myCarService: MyCarService) {}
 
   @Post()
+  @HttpCode(201)
   @UseGuards(AuthGuard('jwt'))
   async create(
     @Req() req,

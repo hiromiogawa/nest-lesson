@@ -17,6 +17,7 @@ export class CircuitsController {
   constructor(private readonly circuitsService: CircuitsService) {}
 
   @Post()
+  @HttpCode(201)
   async create(@Body() createCircuitDto: CreateCircuitDto): Promise<Circuit> {
     return this.circuitsService.create(createCircuitDto);
   }

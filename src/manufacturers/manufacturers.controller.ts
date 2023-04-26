@@ -17,6 +17,7 @@ export class ManufacturersController {
   constructor(private readonly ManufacturersService: ManufacturersService) {}
 
   @Post()
+  @HttpCode(201)
   async create(
     @Body() createManufacturerDto: CreateManufacturerDto,
   ): Promise<Manufacturer> {
