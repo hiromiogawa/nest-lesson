@@ -2,18 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateMyCarDto } from './dto/create-mycar.dto';
-import { MyCar } from './schemas/mycar.schema';
+import { MyCar, MyCarDocument } from './schemas/mycar.schema';
 
 @Injectable()
 export class MyCarService {
-  constructor(@InjectModel('MyCar') private myCarModel: Model<MyCar>) {}
+  constructor(
+    @InjectModel(MyCar.name) private myCarModel: Model<MyCarDocument>,
+  ) {}
 
   async create(createMyCarDto: CreateMyCarDto): Promise<MyCar> {
-    const createdMyCar = new this.myCarModel(createMyCarDto);
-    return createdMyCar.save();
+    const newMyCar = new this.myCarModel(createMyCarDto);
+    return newMyCar.save();
   }
 
-  async findAll(): Promise<MyCar[]> {
-    return this.myCarModel.find().exec();
+  async findByUserId(userId: string): Promise<MyCar[]> {
+    return this.myCarModel.find({ userId }).populate({ path: 'carId' }).exec();
+  }
+
+  async findOne(id: string): Promise<MyCar> {
+    return this.myCarModel.findById(id).exec();
   }
 }

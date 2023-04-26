@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   ValidationPipe,
   UseGuards,
 } from '@nestjs/common';
@@ -25,24 +26,6 @@ export class UsersController {
     return await this.usersService.create(createUser);
   }
 
-  @Post(':userId/add-car/:carId')
-  @UseGuards(AuthGuard('jwt'))
-  async addCarToUser(
-    @Param('userId') userId: string,
-    @Param('carId') carId: string,
-  ): Promise<User> {
-    return this.usersService.addCarToUser(userId, carId);
-  }
-
-  @Post(':userId/remove-car/:carId')
-  @UseGuards(AuthGuard('jwt'))
-  async removeCarFromUser(
-    @Param('userId') userId: string,
-    @Param('carId') carId: Types.ObjectId,
-  ): Promise<User> {
-    return this.usersService.removeCarFromUser(userId, carId);
-  }
-
   // このまま使うのはまずいパスワード丸見え
   @Get()
   async findAll() {
@@ -56,38 +39,42 @@ export class UsersController {
   }
 
   // Update username
-  @Put('/update-name/:id')
+  @Put('/update-name')
   @UseGuards(AuthGuard('jwt'))
   async updateUsername(
-    @Param('id') _id: string,
+    @Req() req,
     @Body('username') newUsername: string,
   ): Promise<User> {
-    return await this.usersService.updateUsername(_id, newUsername);
+    const userId = req.user.id;
+    return await this.usersService.updateUsername(userId, newUsername);
   }
 
   // Update password
-  @Put('/update-password/:id')
+  @Put('/update-password')
   @UseGuards(AuthGuard('jwt'))
   async updatePassword(
-    @Param('id') _id: string,
+    @Req() req,
     @Body('password') newPassword: string,
   ): Promise<User> {
-    return await this.usersService.updatePassword(_id, newPassword);
+    const userId = req.user.id;
+    return await this.usersService.updatePassword(userId, newPassword);
   }
 
   // Update email
-  @Put('/update-email/:id')
+  @Put('/update-email')
   @UseGuards(AuthGuard('jwt'))
   async updateEmail(
-    @Param('id') _id: string,
+    @Req() req,
     @Body('email') newEmail: string,
   ): Promise<User> {
-    return await this.usersService.updateEmail(_id, newEmail);
+    const userId = req.user.id;
+    return await this.usersService.updateEmail(userId, newEmail);
   }
 
-  @Delete(':id')
+  @Delete()
   @UseGuards(AuthGuard('jwt'))
-  async delete(@Param('id') _id: string) {
-    return await this.usersService.delete(_id);
+  async delete(@Req() req) {
+    const userId = req.user.id;
+    return await this.usersService.delete(userId);
   }
 }

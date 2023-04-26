@@ -1,11 +1,13 @@
-import { IsNotEmpty, IsMongoId } from 'class-validator';
+// mycar/dto/create-mycar.dto.ts
+import { IsNotEmpty, IsString } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreateMyCarDto {
   @IsNotEmpty()
-  @IsMongoId()
-  userId: string;
+  @IsString()
+  carId: Types.ObjectId;
 
   @IsNotEmpty()
-  @IsMongoId()
-  carId: string;
+  @IsString()
+  userId: Types.ObjectId;
 }

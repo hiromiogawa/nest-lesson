@@ -82,3 +82,10 @@
   - string modification
   - string partName
   - string effect
+
+フェーズの分け方は、以下のように提案します。
+
+フェーズ 1: User⇔MyCar⇔Car、MyCar⇔Tuning
+フェーズ 2: Circuit、Record（MyCar、Circuit との関連付け）
+フェーズ 3: LapTime（Record と Tuning との関連付け）
+フェーズ 1 では、ユーザーが車を所有し、チューニング情報を管理できるようにします。フェーズ 2 では、サーキットと走行記録の管理を実装し、フェーズ 3 では、各走行記録に対してラップタイムとチューニング情報を関連付けます。

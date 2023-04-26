@@ -12,12 +12,6 @@ export class User extends Document {
 
   @Prop({ unique: true })
   email: string;
-
-  @Prop([{ type: SchemaTypes.ObjectId, ref: Car.name, default: [] }])
-  mycars: Types.ObjectId[];
-
-  @Prop()
-  displacement: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
