@@ -13,6 +13,7 @@ import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
+import { Types } from 'mongoose';
 
 @Controller('users')
 export class UsersController {
@@ -31,6 +32,15 @@ export class UsersController {
     @Param('carId') carId: string,
   ): Promise<User> {
     return this.usersService.addCarToUser(userId, carId);
+  }
+
+  @Post(':userId/remove-car/:carId')
+  @UseGuards(AuthGuard('jwt'))
+  async removeCarFromUser(
+    @Param('userId') userId: string,
+    @Param('carId') carId: Types.ObjectId,
+  ): Promise<User> {
+    return this.usersService.removeCarFromUser(userId, carId);
   }
 
   // このまま使うのはまずいパスワード丸見え

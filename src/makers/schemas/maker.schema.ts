@@ -15,7 +15,7 @@ enum CarMaker {
 
 @Schema()
 export class Maker extends Document {
-  @Prop({ required: true, type: String, enum: CarMaker })
+  @Prop({ required: true, type: String, enum: CarMaker, unique: true })
   name: CarMaker;
 }
 

@@ -11,7 +11,7 @@ enum Drivetrain {
 
 @Schema()
 export class DriveTrain extends Document {
-  @Prop({ required: true, type: String, enum: Drivetrain })
+  @Prop({ required: true, type: String, enum: Drivetrain, unique: true })
   system: Drivetrain;
 }
 

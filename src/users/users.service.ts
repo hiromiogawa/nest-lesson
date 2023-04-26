@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { Car, CarDocument } from '../cars/schemas/car.schema';
 import { hash } from 'bcrypt';
@@ -38,6 +38,26 @@ export class UsersService {
     }
 
     user.mycars.push(car._id.toString());
+    await user.save();
+
+    return user;
+  }
+
+  async removeCarFromUser(
+    userId: string,
+    carId: Types.ObjectId,
+  ): Promise<User> {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const carIndex = user.mycars.indexOf(carId);
+    if (carIndex === -1) {
+      throw new NotFoundException('Car not found in user mycars');
+    }
+
+    user.mycars.splice(carIndex, 1);
     await user.save();
 
     return user;
