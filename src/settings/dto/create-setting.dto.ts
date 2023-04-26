@@ -1,5 +1,5 @@
 export class CreateSettingDto {
-  readonly tuningId: string;
+  readonly mycarId: string;
   readonly tireId: string;
   readonly freeText: string;
 }

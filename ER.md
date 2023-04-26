@@ -9,7 +9,7 @@ erDiagram
   RECORD ||--o{ LAPTIME : has
   LAPTIME ||--o{ TUNING : has
   MYCAR ||--o{ TUNING : has
-  TUNING ||--o{ SETTING : has
+  MYCAR ||--o{ SETTING : has
   LAPTIME ||--o{ SETTING : has
   TIRE_ManufacturerR ||--o{ TIRE : produces
   TIRE ||--o{ SETTING : has
@@ -67,10 +67,9 @@ erDiagram
   }
   SETTING {
     objectId _id
-    objectId tuningId
+    objectId mycarId
     objectId tireId
-    string settingName
-    string settingValue
+    string freeText
   }
   TIRE_ManufacturerR {
     objectId _id
