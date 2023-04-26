@@ -11,7 +11,7 @@ erDiagram
   MYCAR ||--o{ TUNING : has
   TUNING ||--o{ SETTING : has
   LAPTIME ||--o{ SETTING : has
-  TIRE_MANUFACTURER ||--o{ TIRE : produces
+  TIRE_ManufacturerR ||--o{ TIRE : produces
   TIRE ||--o{ SETTING : has
   USER {
     objectId _id
@@ -72,14 +72,14 @@ erDiagram
     string settingName
     string settingValue
   }
-  TIRE_MANUFACTURER {
+  TIRE_ManufacturerR {
     objectId _id
     string name
     string country
   }
   TIRE {
     objectId _id
-    objectId tireManufacturerId
+    objectId tireManufacturerrId
     string modelName
     string type
   }

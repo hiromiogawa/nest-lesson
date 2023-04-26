@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Manufacture } from '../../manufactures/schemas/manufacture.schema';
+import { Manufacturer } from '../../manufacturers/schemas/manufacturer.schema';
 import { DriveTrain } from '../../drivetrains/schemas/drivetrain.schema';
 
 @Schema()
@@ -11,8 +11,8 @@ export class Car extends Document {
   @Prop({ required: true })
   modelName: string;
 
-  @Prop({ type: String, ref: Manufacture.name, required: true })
-  Manufacture: string;
+  @Prop({ type: String, ref: Manufacturer.name, required: true })
+  Manufacturer: string;
 
   @Prop({ type: String, ref: DriveTrain.name, required: true })
   drivetrains: string;

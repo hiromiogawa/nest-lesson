@@ -31,11 +31,11 @@ export class CarsController {
     return this.carsService.findOne(carId);
   }
 
-  @Get('/manufacture/:manufactureId')
-  async findByManufacture(
-    @Param('manufactureId') manufactureId: string,
+  @Get('/manufacturer/:manufacturerId')
+  async findByManufacturer(
+    @Param('manufacturerId') manufacturerId: string,
   ): Promise<Car[]> {
-    return this.carsService.findByManufacture(manufactureId);
+    return this.carsService.findByManufacturer(manufacturerId);
   }
 
   @Get('/driveTrain/:driveTrainId')

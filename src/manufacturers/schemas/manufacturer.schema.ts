@@ -1,7 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-enum CarManufacture {
+enum CarManufacturer {
   TOYOTA = 'TOYOTA',
   HONDA = 'HONDA',
   MAZDA = 'MAZDA',
@@ -14,10 +14,10 @@ enum CarManufacture {
 }
 
 @Schema()
-export class Manufacture extends Document {
-  @Prop({ required: true, type: String, enum: CarManufacture, unique: true })
-  name: CarManufacture;
+export class Manufacturer extends Document {
+  @Prop({ required: true, type: String, enum: CarManufacturer, unique: true })
+  name: CarManufacturer;
 }
 
-export const ManufactureSchema = SchemaFactory.createForClass(Manufacture);
-export type ManufactureDocument = Manufacture & Document;
+export const ManufacturerSchema = SchemaFactory.createForClass(Manufacturer);
+export type ManufacturerDocument = Manufacturer & Document;

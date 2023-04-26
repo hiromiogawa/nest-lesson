@@ -4,15 +4,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Car, CarDocument } from './schemas/car.schema';
 import { CreateCarDto } from './dto/create-car.dto';
-import { Manufacture } from '../manufactures/schemas/manufacture.schema';
+import { Manufacturer } from '../manufacturers/schemas/manufacturer.schema';
 import { DriveTrain } from '../drivetrains/schemas/drivetrain.schema';
 
 @Injectable()
 export class CarsService {
   constructor(
     @InjectModel(Car.name) private carModel: Model<CarDocument>,
-    @InjectModel(Manufacture.name)
-    private readonly ManufactureModel: Model<Manufacture>,
+    @InjectModel(Manufacturer.name)
+    private readonly ManufacturerModel: Model<Manufacturer>,
     @InjectModel(DriveTrain.name)
     private readonly driveTrainModel: Model<DriveTrain>,
   ) {}
@@ -53,21 +53,21 @@ export class CarsService {
   }
 
   // メーカーから絞り込み
-  async findByManufacture(manufactureId: string): Promise<Car[]> {
-    const Manufacture = await this.ManufactureModel.findById(
-      manufactureId,
+  async findByManufacturer(manufacturerId: string): Promise<Car[]> {
+    const Manufacturer = await this.ManufacturerModel.findById(
+      manufacturerId,
     ).exec();
-    if (!Manufacture) {
-      throw new NotFoundException('Manufacture not found');
+    if (!Manufacturer) {
+      throw new NotFoundException('Manufacturer not found');
     }
-    return this.carModel.find({ manufacture: manufactureId }).exec();
+    return this.carModel.find({ manufacturer: manufacturerId }).exec();
   }
 
   // 駆動方式から絞り込み※使わないかも
   async findByDraiveTrain(driveTrainId: string): Promise<Car[]> {
     const driveTrain = await this.driveTrainModel.findById(driveTrainId).exec();
     if (!driveTrain) {
-      throw new NotFoundException('Manufacture not found');
+      throw new NotFoundException('Manufacturer not found');
     }
     return this.carModel.find({ driveTrain: driveTrainId }).exec();
   }
