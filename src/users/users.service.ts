@@ -40,8 +40,12 @@ export class UsersService {
     return user;
   }
 
+  // ログイン時に使用
   async findByEmail(email: string) {
-    const user = await this.userModel.findOne({ email }).exec();
+    const user = await this.userModel
+      .findOne({ email })
+      .select('+password +email')
+      .exec();
     if (!user) {
       throw new NotFoundException('Could not find user');
     }

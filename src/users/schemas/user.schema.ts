@@ -4,13 +4,13 @@ import { Car } from '../../cars/schemas/car.schema';
 
 @Schema()
 export class User extends Document {
-  @Prop()
+  @Prop({ required: true })
   username: string;
 
-  @Prop()
+  @Prop({ required: true, select: false })
   password: string;
 
-  @Prop({ unique: true })
+  @Prop({ required: true, unique: true, select: false })
   email: string;
 }
 

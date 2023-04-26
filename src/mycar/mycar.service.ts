@@ -16,7 +16,11 @@ export class MyCarService {
   }
 
   async findByUserId(userId: string): Promise<MyCar[]> {
-    return this.myCarModel.find({ userId }).populate({ path: 'carId' }).exec();
+    return this.myCarModel
+      .find({ userId })
+      .populate({ path: 'carId' })
+      .populate({ path: 'userId' })
+      .exec();
   }
 
   async findOne(id: string): Promise<MyCar> {
